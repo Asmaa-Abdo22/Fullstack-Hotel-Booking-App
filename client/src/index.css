@@ -1,0 +1,57 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+* {
+  font-family: "Outfit Variable", sans-serif;
+}
+.fontPlayfair {
+  font-family: "Playfair Variable", serif;
+}
+
+/* 🎨 */
+@layer base {
+  :root {
+    --color-primary: #3255ca;
+    --color-primary-light: #3b82f6;
+    --color-primary-dark: #1e3a8a;
+    --color-bg-main: #ffffff;
+    --color-bg-card: #f8fafc;
+    --color-bg-section: #f1f5f9;
+    --color-text-main: #0f172a;
+    --color-text-secondary: #6a788b;
+    --color-text-whitee: #ffffff;
+    --color-border: #e2e8f0;
+    --shadow-card: 0 4px 12px rgba(15, 23, 42, 0.08);
+   
+  }
+
+  .dark {
+    --color-primary: #60a5fa;
+    --color-primary-light: #66acfc;
+    --color-primary-dark: #3b82f6;
+   --color-bg-main: #1a243f;
+   
+  --color-bg-card: #243253;
+  --color-bg-section: #1f2b4a;
+
+    --color-text-main: #f1f5f9;
+    --color-text-secondary: #cbd5e1;
+    --color-text-whitee: #ffffff;
+    --color-border: #334155;
+    --shadow-card: 0 4px 20px rgba(96, 165, 250, 0.12);
+  }
+  
+  body {
+    background-color: var(--color-bg-main);
+    color: var(--color-text-main);
+    transition: background-color 0.3s, color 0.3s;
+  }
+}
+
+  h1, h2, h3, h4, h5, h6 {
+
+      font-family: "Playfair Variable", serif;
+  }
+/* 
+
+
