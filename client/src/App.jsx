@@ -10,8 +10,11 @@ import LayOutt from "./Pages/HotelOwner/LayOutt";
 import Dashboard from "./Pages/HotelOwner/Dashboard";
 import AddRoom from "./Pages/HotelOwner/AddRoom";
 import ListRoom from "./Pages/HotelOwner/ListRoom";
-
+import { Toaster } from "react-hot-toast";
+import { useAppContext } from "./Context/AppContext";
+import HotelRegestration from "./Components/HotelRegestration/HotelRegestration";
 function App() {
+  const{showHotelReg}=useAppContext()
   const routes = createBrowserRouter([
     {
       path: "/",
@@ -25,15 +28,21 @@ function App() {
         { path: "my-bookings", element: <MyBookings /> },
       ],
     },
-    {path:"/owner" ,element:<LayOutt/>,children:[
-      {index:true, element:<Dashboard/>},
-      {path:"addRoom", element:<AddRoom/>},
-      {path:"listRoom", element:<ListRoom/>},
-    ]}
+    {
+      path: "/owner",
+      element: <LayOutt />,
+      children: [
+        { index: true, element: <Dashboard /> },
+        { path: "addRoom", element: <AddRoom /> },
+        { path: "listRoom", element: <ListRoom /> },
+      ],
+    },
   ]);
   return (
     <>
       <RouterProvider router={routes} />
+      {showHotelReg && <HotelRegestration/>}
+      <Toaster />
     </>
   );
 }

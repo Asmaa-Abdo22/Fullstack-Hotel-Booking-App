@@ -4,6 +4,7 @@ import logoImg from "../../assets/logo.svg";
 import { BookIcon, MenuIcon, Moon, SearchIcon, Sun, X } from "lucide-react";
 import { applyTheme } from "../../ThemeToogle";
 import { useClerk, useUser, UserButton } from "@clerk/clerk-react";
+import { useAppContext } from "../../Context/AppContext";
 
 const Navbar = () => {
   const navLinks = [
@@ -36,7 +37,8 @@ const Navbar = () => {
 
   const isDark = theme === "dark";
   const { openSignIn } = useClerk();
-  const {  user } = useUser();
+  const {  setShowHotelReg, isOwner } = useAppContext();
+  const{user}=useUser()
   const navigate = useNavigate();
 
   return (
@@ -48,7 +50,7 @@ const Navbar = () => {
             ? isDark
               ? " bg-(--color-bg-main) shadow-lg py-4  text-(--color-primary)"
               : "bg-(--color-bg-main) shadow-md text-(--color-primary)  py-4 "
-            : "bg-black  opacity-50   py-4 "
+            : "bg-black  opacity-65   py-4 "
         }`}
       >
         {/* Logo */}
@@ -87,19 +89,20 @@ const Navbar = () => {
               />
             </Link>
           ))}
-         
+
           {user && (
             <button
-              onClick={() => {
-                navigate("/owner");
-              }}
+               onClick={() => (isOwner ? navigate("/owner") : setShowHotelReg(true))}
+
               className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all ${
-               isScrolled? isDark
-                  ? "text-(--color-primary) border-(--color-border)"
-                  : "text-(--color-primary) border-(--color-border)" : "text-white border-white"
+                isScrolled
+                  ? isDark
+                    ? "text-(--color-primary) border-(--color-border)"
+                    : "text-(--color-primary) border-(--color-border)"
+                  : "text-white border-white"
               }`}
             >
-              Dashboard
+              {isOwner ? "Dashboard":"List Your Hotel"}
             </button>
           )}
         </div>
@@ -191,7 +194,7 @@ const Navbar = () => {
           {user && (
             <button
               onClick={() => {
-                navigate("/owner");
+                isOwner? navigate("/owner") :setShowHotelReg(true)
               }}
               className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all ${
                 isDark
@@ -199,7 +202,7 @@ const Navbar = () => {
                   : "text-(--color-primary) border-(--color-border)"
               }`}
             >
-              Dashboard
+              {isOwner? "Dashboard":"List Your Hotel"}
             </button>
           )}
 
