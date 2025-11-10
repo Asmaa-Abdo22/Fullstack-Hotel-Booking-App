@@ -1,9 +1,41 @@
 import { Building2, DollarSign } from "lucide-react";
 import { dashboardDummyData } from "../../assets/assets";
 import { useState } from "react";
+import { useAppContext } from "../../Context/AppContext";
+import { useUser } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const Dashboard = () => {
-  const [dashboardData, setdashboardData] = useState(dashboardDummyData);
+  const { axios, getToken, currency } = useAppContext();
+  const { user } = useUser();
+  const [dashboardData, setdashboardData] = useState({
+    totalBookings: 0,
+    totalRevenue: 0,
+    bookings: [],
+  });
+
+  const fetchDashboardData = async () => {
+    try {
+      const { data } = await axios.get(`/api/bookings/hotel`, {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      });
+      if (data.success) {
+       
+        setdashboardData(data.dashboardData);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  useEffect(() => {
+    if (user) {
+      fetchDashboardData();
+    }
+  }, [user]);
+
   return (
     <>
       <div className="dashboard ">
@@ -38,7 +70,7 @@ const Dashboard = () => {
                 Total Revenue
               </p>
               <span className="text-(--color-text-secondary)">
-                $ {dashboardData.totalRevenue}
+                {currency} {dashboardData.totalRevenue}
               </span>
             </div>
           </div>
@@ -60,18 +92,23 @@ const Dashboard = () => {
             <tbody className="text-sm ">
               {dashboardData.bookings.map((item, index) => {
                 return (
-                  <tr key={index} className=" text-center border-t border-(--color-border) hover:bg-(--color-bg-section)/40 transition">
-                    <td className="py-3 px-4 ">
-                      {item.user.username}
-                    </td>
-                    <td className="py-3 px-4 ">
-                      {item.room.roomType}
-                    </td>
-                    <td className="py-3 px-4 ">
-                     $ {item.totalPrice}
-                    </td>
-                    <td >
-                      <button className={`mr-1 py-1 px-3 text-xs rounded-full mx-auto ${item.isPaid?"bg-green-200 text-green-600" :"bg-orange-200 text-orange-600"}`}>{item.isPaid? "Completed":"Pending"}</button>
+                  <tr
+                    key={index}
+                    className=" text-center border-t border-(--color-border) hover:bg-(--color-bg-section)/40 transition"
+                  >
+                    <td className="py-3 px-4 ">{item.user.username}</td>
+                    <td className="py-3 px-4 ">{item.room.roomType}</td>
+                    <td className="py-3 px-4 ">{currency} {item.totalPrice}</td>
+                    <td>
+                      <button
+                        className={`mr-1 py-1 px-3 text-xs rounded-full mx-auto ${
+                          item.isPaid
+                            ? "bg-green-200 text-green-600"
+                            : "bg-orange-200 text-orange-600"
+                        }`}
+                      >
+                        {item.isPaid ? "Completed" : "Pending"}
+                      </button>
                     </td>
                   </tr>
                 );
