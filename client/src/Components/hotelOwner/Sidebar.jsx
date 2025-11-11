@@ -23,6 +23,7 @@ const Sidebar = () => {
             key={index}
             onClick={() => {
               setisActive(index);
+              window.scrollTo({top:0,left:0,behavior:"smooth"})
             }}
             className={`flex items-center gap-2 px-2 justify-center md:justify-start py-3 hover:bg-(--color-bg-section) hover:text-(--color-primary) transition-colors   duration-300  ${
               isActive === index

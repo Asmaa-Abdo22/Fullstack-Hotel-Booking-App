@@ -1,15 +1,17 @@
 import { Calendar, Search } from "lucide-react";
 
-const Form = () => {
+const Form = ({ destination, setDestination,onSearch }) => {
   return (
     <>
-      <form className="bg-(--color-bg-main) text-(--color-primary) rounded-lg px-6 py-4  flex flex-col md:flex-row max-md:items-start gap-4 max-md:mx-auto">
+      <form onSubmit={onSearch} className="bg-(--color-bg-main) text-(--color-primary) rounded-lg px-6 py-4  flex flex-col md:flex-row max-md:items-start gap-4 max-md:mx-auto">
         <div>
           <div className="flex items-center gap-2">
             <Calendar size={17} />
             <label htmlFor="destinationInput">Destination</label>
           </div>
           <input
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
             list="destinations"
             id="destinationInput"
             type="text"
@@ -61,7 +63,10 @@ const Form = () => {
           />
         </div>
 
-        <button type="button" className="flex items-center justify-center gap-1 rounded-md  py-3 px-4  my-auto cursor-pointer max-md:w-full max-md:py-1 bg-(--color-bg-card) border-(--color-border) text-(--color-primary-light)">
+        <button
+          type="submit"
+          className="flex items-center justify-center gap-1 rounded-md  py-3 px-4  my-auto cursor-pointer max-md:w-full max-md:py-1 bg-(--color-bg-card) border-(--color-border) text-(--color-primary-light)"
+        >
           <Search size={17} />
           <span>Search</span>
         </button>

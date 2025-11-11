@@ -5,7 +5,7 @@ import { useUser, useAuth } from "@clerk/clerk-react";
 import { toast } from "react-hot-toast";
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
- const AppContext = createContext();
+const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const currency = import.meta.env.VITE_CURRENCY || "$";
@@ -15,10 +15,20 @@ export const AppProvider = ({ children }) => {
   const [isOwner, setIsOwner] = useState(false);
   const [showHotelReg, setShowHotelReg] = useState(false);
   const [searchCities, setSearchCities] = useState([]);
-  const [rooms, setRooms] = useState([])
+  const [rooms, setRooms] = useState([]);
+  const fetchRooms = async () => {
+    try {
+      const { data } = await axios.get("/api/rooms");
+      if (data.success) {
+        setRooms(data.rooms);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   const fetchUser = async () => {
     try {
-      const token= await getToken()
+      const token = await getToken();
       const { data } = await axios.get("/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -42,6 +52,9 @@ export const AppProvider = ({ children }) => {
       fetchUser();
     }
   }, [user]);
+  useEffect(() => {
+    fetchRooms();
+  }, []);
 
   const value = {
     currency,
@@ -54,9 +67,10 @@ export const AppProvider = ({ children }) => {
     axios,
     searchCities,
     setSearchCities,
+    rooms,
+    setRooms,
+    fetchRooms
   };
-  return (
-    <AppContext.Provider value={ value }>{children}</AppContext.Provider>
-  );
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 export const useAppContext = () => useContext(AppContext);

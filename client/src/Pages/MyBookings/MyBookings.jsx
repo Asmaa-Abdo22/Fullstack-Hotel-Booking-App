@@ -1,9 +1,34 @@
-import { useState } from "react";
-import { userBookingsDummyData } from "../../assets/assets";
+import { useEffect, useState } from "react";
 import { Calendar, MapPin, Users, CreditCard } from "lucide-react";
+import { useAppContext } from "../../Context/AppContext";
+import { useUser } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
 
 const MyBookings = () => {
-  const [bookings] = useState(userBookingsDummyData);
+  const [bookings, setBookings] = useState([]);
+  const { axios, getToken } = useAppContext();
+  const { user } = useUser();
+  const getUserBookings = async () => {
+    try {
+      const { data } = await axios.get("/api/bookings/user", {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      });
+      if (data.success) {
+        setBookings(data.bookings);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  useEffect(() => {
+    if (user) {
+      getUserBookings();
+    }
+  }, [user]);
 
   return (
     <div className="mt-24 md:mt-32 px-6 md:px-12 lg:px-32 mb-20">
@@ -28,86 +53,109 @@ const MyBookings = () => {
 
       {/* Bookings List */}
       <div className="mt-6 space-y-6">
-        {bookings.map((item) => (
-          <div
-            key={item._id}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-4 p-5 bg-(--color-bg-card) rounded-2xl shadow-(--shadow-card) hover:shadow-lg transition-shadow"
-          >
-            {/* Hotel Info */}
-            <div className="flex flex-col md:flex-row gap-4 md:items-center items-start">
-              <img
-                src={item.room.images[0]}
-                alt={item.hotel.name}
-                className="w-full sm:w-44 h-36 object-cover rounded-xl"
-              />
-              <div className="flex flex-col gap-1 text-left">
-                <div className="flex flex-wrap items-center gap-1">
-                  <h2 className="font-bold text-xl text-(--color-text-main)">
-                    {item.hotel.name}
-                  </h2>
-                  <span className="text-sm text-(--color-text-secondary)">
-                    ({item.room.roomType})
-                  </span>
+        {bookings.length > 0 ? (
+          <>
+            {" "}
+            {bookings.map((item) => (
+              <div
+                key={item._id}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-4 p-5 bg-(--color-bg-card) rounded-2xl shadow-(--shadow-card) hover:shadow-lg transition-shadow"
+              >
+                {/* Hotel Info */}
+                <div className="flex flex-col md:flex-row gap-4 md:items-center items-start">
+                  <img
+                    src={item.room.images[0]}
+                    alt={item.hotel.name}
+                    className="w-full sm:w-44 h-36 object-cover rounded-xl"
+                  />
+                  <div className="flex flex-col gap-1 text-left">
+                    <div className="flex flex-wrap items-center gap-1">
+                      <h2 className="font-bold text-xl text-(--color-text-main)">
+                        {item.hotel.name}
+                      </h2>
+                      <span className="text-sm text-(--color-text-secondary)">
+                        ({item.room.roomType})
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-1 text-(--color-text-secondary)">
+                      <MapPin size={15} />
+                      <p className="text-sm leading-snug">
+                        {item.hotel.address}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1 text-(--color-text-secondary)">
+                      <Users size={15} />
+                      <span>Guests: {item.guests}</span>
+                    </div>
+                    <p className="text-sm mt-1">
+                      Total:{" "}
+                      <span className="text-(--color-primary) font-semibold">
+                        ${item.totalPrice}
+                      </span>
+                    </p>
+                  </div>
                 </div>
-                <div className="flex items-start gap-1 text-(--color-text-secondary)">
-                  <MapPin size={15} />
-                  <p className="text-sm leading-snug">{item.hotel.address}</p>
-                </div>
-                <div className="flex items-center gap-1 text-(--color-text-secondary)">
-                  <Users size={15} />
-                  <span>Guests: {item.guests}</span>
-                </div>
-                <p className="text-sm mt-1">
-                  Total:{" "}
-                  <span className="text-(--color-primary) font-semibold">
-                    ${item.totalPrice}
-                  </span>
-                </p>
-              </div>
-            </div>
 
-            {/* Dates */}
-            <div className="flex flex-col justify-center items-start lg:items-center gap-1 text-sm">
-              <div className="flex items-center gap-1">
-                <Calendar size={16} className="text-(--color-primary)" />
-                <span className="font-medium">Check In:</span>
-                <span className="text-(--color-text-secondary) ml-1">
-                  {new Date(item.checkInDate).toDateString()}
-                </span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Calendar size={16} className="text-(--color-primary)" />
-                <span className="font-medium">Check Out:</span>
-                <span className="text-(--color-text-secondary) ml-1">
-                  {new Date(item.checkOutDate).toDateString()}
-                </span>
-              </div>
-            </div>
+                {/* Dates */}
+                <div className="flex flex-col justify-center items-start lg:items-center gap-1 text-sm">
+                  <div className="flex items-center gap-1">
+                    <Calendar size={16} className="text-(--color-primary)" />
+                    <span className="font-medium">Check In:</span>
+                    <span className="text-(--color-text-secondary) ml-1">
+                      {new Date(item.checkInDate).toDateString()}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Calendar size={16} className="text-(--color-primary)" />
+                    <span className="font-medium">Check Out:</span>
+                    <span className="text-(--color-text-secondary) ml-1">
+                      {new Date(item.checkOutDate).toDateString()}
+                    </span>
+                  </div>
+                </div>
 
-            {/* Payment */}
-            <div className="flex items-center  gap-2 lg:justify-center">
-              <div className="flex items-center gap-2">
-                <div
-                  className={`w-2.5 h-2.5 rounded-full ${
-                    item.isPaid ? "bg-green-500" : "bg-red-500"
-                  }`}
-                />
-                <p
-                  className={`font-semibold ${
-                    item.isPaid ? "text-green-500" : "text-red-500"
-                  }`}
-                >
-                  {item.isPaid ? "Paid" : "Unpaid"}
-                </p>
+                {/* Payment */}
+                <div className="flex items-center  gap-2 lg:justify-center">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className={`w-2.5 h-2.5 rounded-full ${
+                        item.isPaid ? "bg-green-500" : "bg-red-500"
+                      }`}
+                    />
+                    <p
+                      className={`font-semibold ${
+                        item.isPaid ? "text-green-500" : "text-red-500"
+                      }`}
+                    >
+                      {item.isPaid ? "Paid" : "Unpaid"}
+                    </p>
+                  </div>
+                  {!item.isPaid && (
+                    <button className="flex items-center gap-2 border border-(--color-border) text-(--color-primary) rounded-full px-4 py-1.5 cursor-pointer duration-300 text-sm hover:bg-( --color-text-main)  transition-all">
+                      <CreditCard size={14} /> Pay Now
+                    </button>
+                  )}
+                </div>
               </div>
-              {!item.isPaid && (
-                <button className="flex items-center gap-2 border border-(--color-border) text-(--color-primary) rounded-full px-4 py-1.5 cursor-pointer duration-300 text-sm hover:bg-( --color-text-main)  transition-all">
-                  <CreditCard size={14} /> Pay Now
-                </button>
-              )}
-            </div>
+            ))}
+          </>
+        ) : (
+          <div className="text-center bg-(--color-bg-card) py-16 rounded-2xl shadow-(--shadow-card)">
+            <h3 className="text-2xl font-bold text-(--color-text-main)">
+              No bookings yet
+            </h3>
+            <p className="text-(--color-text-secondary) mt-2">
+              You haven’t made any bookings yet. Start exploring and plan your
+              next trip!
+            </p>
+            <button
+              onClick={() => navigate("/rooms")}
+              className="mt-4 bg-(--color-primary) text-white py-2 px-6 rounded-lg font-medium hover:bg-(--color-primary-dark) transition"
+            >
+              Explore Hotels
+            </button>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

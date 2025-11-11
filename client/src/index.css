@@ -11,19 +11,22 @@
 /* 🎨 */
 @layer base {
   :root {
-    --color-primary: #3255ca;
-    --color-primary-light: #3b82f6;
-    --color-primary-dark: #1e3a8a;
-    --color-bg-main: #ffffff;
-    --color-bg-card: #f8fafc;
-    --color-bg-section: #f1f5f9;
-    --color-text-main: #0f172a;
-    --color-text-secondary: #6a788b;
-    --color-text-whitee: #ffffff;
-    --color-border: #e2e8f0;
-    --shadow-card: 0 4px 12px rgba(15, 23, 42, 0.08);
-   
-  }
+  --color-primary: #3b82f6;
+  --color-primary-light: #60a5fa;
+  --color-primary-dark: #3286e6;
+
+  --color-bg-main: #f5f7ff;
+  --color-bg-card: #e4ebff;
+  --color-bg-section: #c7d2f97a;
+
+  --color-text-main: #1e293b;
+  --color-text-secondary: #334155;
+  --color-text-whitee: #ffffff;
+
+  --color-border: #cbd5e1;
+  --shadow-card: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
 
   .dark {
     --color-primary: #60a5fa;

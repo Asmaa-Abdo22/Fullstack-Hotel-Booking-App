@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import homeImg from "../../assets/heroImage.png";
 import ExclusiveOffers from "../../Components/ExclusiveOffers/ExclusiveOffers";
 import FeaturedDestination from "../../Components/FeaturedDestination/FeaturedDestination";
@@ -5,8 +6,39 @@ import Form from "../../Components/Form/Form";
 import HotelRegestration from "../../Components/HotelRegestration/HotelRegestration";
 import Newsletter from "../../Components/Newsletter/Newsletter";
 import Testimonials from "../../Components/Testimonials/Testimonials";
+import { useAppContext } from "../../Context/AppContext";
+import { useState } from "react";
+import RecommendedHotels from "../../Components/RecommendedHotels/RecommendedHotels";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const [recommended, setRecommended] = useState([]);
+  const { getToken, setSearchCities, axios } = useAppContext();
+  const [destination, setDestination] = useState("");
+  const onSearch = async (e) => {
+    e.preventDefault();
+    navigate(`rooms?destination=${destination}`);
+    try {
+      const { data } = await axios.post(
+        "/api/user/store-recent-search",
+        {
+          recentSearchedCity: destination,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${await getToken()}`,
+          },
+        }
+      );
+      setSearchCities((prevSearchCitiesArray) => {
+        const updatedSearchedCities = [...prevSearchCitiesArray, destination];
+        if (updatedSearchedCities.length > 3) {
+          updatedSearchedCities.shift();
+        }
+        return updatedSearchedCities;
+      });
+    } catch (error) {}
+  };
   return (
     <>
       {/* Home Section */}
@@ -27,9 +59,16 @@ const Home = () => {
           Unparalleled luxury and comfort await at the world's most exclusive
           hotels and resorts. Start your journey today.
         </p>
-        <Form />
+        <Form
+          destination={destination}
+          setDestination={setDestination}
+          onSearch={onSearch}
+        />
       </div>
-      {/* <HotelRegestration /> */}
+      <RecommendedHotels
+        recommended={recommended}
+        setRecommended={setRecommended}
+      />
       <FeaturedDestination />
 
       <ExclusiveOffers />
