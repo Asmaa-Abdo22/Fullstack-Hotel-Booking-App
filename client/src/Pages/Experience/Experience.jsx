@@ -137,7 +137,7 @@ const Experience = () => {
                       alt={experience.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                     <div className="absolute top-4 left-4 bg-(--color-primary)/90 p-3 rounded-lg">
                       <Icon className="text-white" size={24} />
                     </div>
@@ -238,7 +238,7 @@ const Experience = () => {
                   alt={destination.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <div className="flex items-center gap-2 text-white mb-2">
                     <MapPin size={18} />

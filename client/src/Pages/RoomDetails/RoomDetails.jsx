@@ -167,29 +167,37 @@ const RoomDetails = () => {
         </div>
         {/* imagesss */}
         <div className="flex flex-col md:flex-row  gap-6 mt-6 justify-between ">
-          <div className="mainImg w-full md:w-1/2">
-            <img
-              src={mainImg}
-              alt="main img"
-              className="rounded-3xl object-cover"
-            />
+          <div className="mainImg w-full md:w-1/2 rounded-3xl overflow-hidden">
+            <div className="relative w-full aspect-[16/10] md:aspect-[5/4] bg-(--color-bg-section)">
+              <img
+                src={mainImg}
+                alt={`${room.hotel?.name} main view`}
+                className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
           </div>
           <div className="smallImgs w-full md:w-[45%] grid grid-cols-2 gap-4">
             {room?.images.map((item, index) => {
+              const isActive = mainImg === item;
               return (
-                <div
-                  className="cursor-pointer "
+                <button
+                  type="button"
+                  className={`relative overflow-hidden rounded-2xl aspect-[4/3] border transition ${
+                    isActive
+                      ? "border-(--color-primary) shadow-(--shadow-card) border-4"
+                      : "border-(--color-border) hover:border-(--color-primary-light)"
+                  }`}
                   key={index}
                   onClick={() => setmainImg(item)}
                 >
                   <img
                     src={item}
-                    alt="item img"
-                    className={`${
-                      mainImg === item ? "border-4 border-orange-500" : ""
-                    } rounded-3xl object-cover w-full`}
+                    alt={`${room.hotel?.name} view ${index + 1}`}
+                    className="absolute inset-0 h-full w-full object-cover cursor-pointer"
+                    loading="lazy"
                   />
-                </div>
+                </button>
               );
             })}
           </div>
@@ -308,11 +316,14 @@ const RoomDetails = () => {
         </p>
         {/* contact */}
         <div className="contactt flex items-start gap-4">
-          <img
-            className="w-[50px] h-[50px] rounded-full"
-            src={room.images[0]}
-            alt={room.hotel?.name}
-          />
+          <div className="h-[56px] w-[56px] rounded-full overflow-hidden border border-(--color-border)">
+            <img
+              className="h-full w-full object-cover"
+              src={room.images[0]}
+              alt={room.hotel?.name}
+              loading="lazy"
+            />
+          </div>
           <div className="title ">
             <div className=" flex items-center">
               <span className="md:text-xl">Hosted By</span>{" "}
