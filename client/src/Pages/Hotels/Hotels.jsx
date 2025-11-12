@@ -130,7 +130,7 @@ const Hotels = () => {
                   >
                     <img
                       src={room.images[0]}
-                      alt={room.hotel.name}
+                      alt={room.hotel?.name}
                       className="w-full h-64 md:h-56 object-cover rounded-xl"
                     />
                   </div>
@@ -139,13 +139,13 @@ const Hotels = () => {
                   <div className="grow space-y-3 py-3 md:py-0 flex flex-col justify-between">
                     <div>
                       <p className="text-(--color-text-secondary) text-sm uppercase">
-                        {room.hotel.city}
+                        {room.hotel?.city}
                       </p>
                       <h3
                         className="text-2xl font-semibold text-(--color-text-main) cursor-pointer"
                         onClick={() => navigate(`/rooms/${room._id}`)}
                       >
-                        {room.hotel.name}
+                        {room.hotel?.name}
                       </h3>
                       <div className="flex items-center gap-2 text-sm text-(--color-text-secondary)">
                         <StarIcon fill="yellow" size={17} />
@@ -153,7 +153,7 @@ const Hotels = () => {
                       </div>
                       <div className="flex items-center gap-1 text-(--color-text-secondary)">
                         <MapPin size={15} />
-                        <p className="text-sm">{room.hotel.address}</p>
+                        <p className="text-sm">{room.hotel?.address}</p>
                       </div>
                     </div>
 
@@ -175,7 +175,7 @@ const Hotels = () => {
                     <div className="pt-3">
                       <h5 className="font-semibold">
                         <span className="text-lg text-(--color-primary)">
-                          {currency} {room.pricePerNight}
+                          {currency} {room?.pricePerNight}
                         </span>
                         <span className="text-(--color-text-secondary)"> / night</span>
                       </h5>

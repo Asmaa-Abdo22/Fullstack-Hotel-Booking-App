@@ -16,7 +16,7 @@ const HotelCard = ({ room, index }) => {
         })
       }}
     >
-      <img src={room.images[0]} alt={room.roomType} className="w-full" />
+      <img src={room.images[0]} alt={room.roomType} className="w-full h-50" />
       {index % 2 == 0 && (
         <p className="text-(--color-primary) bg-(--color-bg-main) absolute top-3 py-1 px-3 left-3 w-fit rounded-full">
           Best Seller
@@ -25,7 +25,7 @@ const HotelCard = ({ room, index }) => {
       <div className="p-4 pt-5">
         <div className="flex items-center justify-between  mb-3">
           <h4 className="font-bold text-xl text-(--color-text-main)">
-            {room.hotel.name}
+            {room.hotel?.name}
           </h4>
           <div className="flex items-center gap-1">
             <StarIcon className="text-yellow-300" fill="yellow" size={18} />
@@ -34,7 +34,7 @@ const HotelCard = ({ room, index }) => {
         </div>
         <div className="flex items-center  gap-1 text-(--color-text-secondary)">
           <MapPin  size={15}/>
-          <p className="text-sm"> {room.hotel.address}</p>
+          <p className="text-sm"> {room.hotel?.address}</p>
         </div>
         
         <div className="flex justify-between items-center mt-4">

@@ -65,10 +65,13 @@ const Home = () => {
           onSearch={onSearch}
         />
       </div>
-      <RecommendedHotels
-        recommended={recommended}
-        setRecommended={setRecommended}
-      />
+      {recommended?.length > 0 && (
+        <RecommendedHotels
+          recommended={recommended}
+          setRecommended={setRecommended}
+        />
+      )}
+
       <FeaturedDestination />
 
       <ExclusiveOffers />

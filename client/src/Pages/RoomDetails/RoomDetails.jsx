@@ -129,9 +129,9 @@ const RoomDetails = () => {
       <div className="details mt-25 md:mt-35 px-8 mx-auto md:px-20 lg:px-32  mb-20">
         <div className=" flex gap-2 items-center">
           <h1 className="font-extrabold  text-2xl md:text-4xl text-(--color-text-main)">
-            {room.hotel.name}
+            {room.hotel?.name}
           </h1>{" "}
-          <span className=" text-sm">{`(${room.roomType})`}</span>{" "}
+          <span className=" text-sm">{`(${room?.roomType})`}</span>{" "}
           <span className="bg-orange-500 text-sm px-2 py-1 rounded-full text-white">
             20% off
           </span>
@@ -163,7 +163,7 @@ const RoomDetails = () => {
         </div>
         <div className="flex items-center  gap-1 text-(--color-text-secondary)">
           <MapPin size={15} />
-          <p className="text-sm">{room.hotel.address}</p>
+          <p className="text-sm">{room.hotel?.address}</p>
         </div>
         {/* imagesss */}
         <div className="flex flex-col md:flex-row  gap-6 mt-6 justify-between ">
@@ -217,7 +217,7 @@ const RoomDetails = () => {
           </div>
           <div className="price font-bold">
             <span className="text-lg text-(--color-primary) mr-1">
-              ${room.pricePerNight}
+              ${room?.pricePerNight}
             </span>
             <span className="text-(--color-text-secondary)"> / night</span>
           </div>
@@ -311,13 +311,13 @@ const RoomDetails = () => {
           <img
             className="w-[50px] h-[50px] rounded-full"
             src={room.images[0]}
-            alt={room.hotel.name}
+            alt={room.hotel?.name}
           />
           <div className="title ">
             <div className=" flex items-center">
               <span className="md:text-xl">Hosted By</span>{" "}
               <h2 className="font-bold ml-1 text-xl md:text-3xl">
-                {room.hotel.name}
+                {room.hotel?.name}
               </h2>
             </div>
             <div className="review  flex gap-2 items-center my-1">
