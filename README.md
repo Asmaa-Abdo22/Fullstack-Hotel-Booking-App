@@ -18,6 +18,7 @@ A modern, full-featured hotel booking platform built with **React & Vite**.
 - 📧 **Nodemailer** *(Booking Confirmation Emails)*  
 - 🌐 **Axios + React Router DOM 7.9.4**  
 - 🔔 **React Hot Toast + Lucide Icons**
+- 🖼️ **Prebuilt UI Components** (Reusable layouts & elements for faster development)
 
 ---
 
