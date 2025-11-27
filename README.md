@@ -1,4 +1,3 @@
-🚀 **Latest Project:**  
 # 🏨 𝗤𝘂𝗶𝗰𝗸𝗦𝘁𝗮𝘆 – FullStack Hotel Booking App  
 
 A modern, full-featured hotel booking platform built with **React & Vite**.  
